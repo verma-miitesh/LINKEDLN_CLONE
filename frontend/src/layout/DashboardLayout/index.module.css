@@ -1,0 +1,55 @@
+.homeContainer{
+    display: flex;
+}
+
+.homeContainer > div:nth-child(odd){
+    flex:0.2
+}
+
+.homeContainer > div:nth-child(even){
+    flex:0.6
+}
+
+.homeContainer__leftBar{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: flex-start;
+    border-right: 1px solid rgb(222,222,222);
+    /* justify-content: center; */
+}
+
+.sideBarOption{
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    gap: 1.3rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: all 0.2s;
+    height:2.75rem;
+}
+
+.sideBarOption:hover{
+    transform: scale(1.03);
+}
+
+.sideBarOption > svg{
+    height: 1.4em;
+    width: 1.4em;
+}
+
+.homeContainer__extraContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: center;
+    border-left: 1px solid rgb(222,222,222);
+}
+
+.homeContainer__feedContainer{
+    padding-inline: 1rem;
+}
+

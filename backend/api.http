@@ -1,0 +1,54 @@
+POST http://localhost:8080/register HTTP/1.1
+content-Type: application/json
+
+{
+    "username":"miiteshh",
+    "password":"M!iitesh2005!",
+    "email":"vermamiiteshh@gmail.com",
+    "name":"MIITESH VERMA"
+}
+
+
+###
+POST http://localhost:8080/login HTTP/1.1
+content-Type: application/json
+
+{
+    "email":"vermamiitesh@gmail.com",
+    "password":"M!iitesh2005!"
+}
+
+###
+POST http://localhost:8080/get_user_and_profile HTTP/1.1
+content-Type: application/json
+
+{
+    "token":"a0337ee40529c49370c916c5efa3029e4a718e04cab5f348ed6869b51adc85fe"
+}
+
+###
+POST http://localhost:8080/update_profile_data HTTP/1.1
+content-Type: application/json
+
+{
+    "token":"a0337ee40529c49370c916c5efa3029e4a718e04cab5f348ed6869b51adc85fe",
+    "bio":"Experienced Developer",
+    "currentPost":"CTO",
+    "pastWork":[
+        {
+            "company":"Microsoft",
+            "position":"CTO",
+            "years":"2+"
+        }
+    ],
+    "education":[
+        {
+            "school":"CHANDIGARH UNIVERSITY",
+            "degree":"B.Tech",
+            "fieldOfStudy":"2023-2027"
+        }
+    ]
+}
+
+###
+GET http://localhost:8080/user/get_all_users

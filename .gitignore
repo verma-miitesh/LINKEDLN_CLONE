@@ -1,0 +1,12 @@
+# Ignore Node.js files (frontend/backend)
+node_modules/
+.env
+dist/
+build/
+.DS_Store
+
+# Ignore logs
+*.log
+
+# Ignore editor settings
+.vscode/
