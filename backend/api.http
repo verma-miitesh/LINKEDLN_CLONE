@@ -31,7 +31,7 @@ POST http://localhost:8080/update_profile_data HTTP/1.1
 content-Type: application/json
 
 {
-    "token":"a0337ee40529c49370c916c5efa3029e4a718e04cab5f348ed6869b51adc85fe",
+    "token":"3593efa6a7a0c4ac0ad207cd653391cb63d3a16614f0f1d6d06b77d97eb0f016",
     "bio":"Experienced Developer",
     "currentPost":"CTO",
     "pastWork":[
