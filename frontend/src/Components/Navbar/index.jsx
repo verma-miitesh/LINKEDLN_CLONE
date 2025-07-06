@@ -39,7 +39,9 @@ function NavBarComponent() {
                     {authState.profileFetched && <div>
                         <div style={{ display: "flex", gap: "1.2rem", color: "black" }}>
                             <p>Hey, {authState.user?.userId?.name || "Guest"}</p>
-                            <p style={{ fontWeight: "bold", cursor: "pointer" }}>Profile</p>
+                            <p onClick={()=>{
+                                router.push("/profile");
+                            }} style={{ fontWeight: "bold", cursor: "pointer" }}>Profile</p>
                             <p onClick={()=>{
                                 localStorage.removeItem("token")
                                 router.push("/login")
