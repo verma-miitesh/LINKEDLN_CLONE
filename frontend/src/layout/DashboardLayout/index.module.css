@@ -53,3 +53,39 @@
     padding-inline: 1rem;
 }
 
+.mobileNavBar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 6vh;
+    display: none;
+    justify-content: space-around;
+    background: white;
+    align-items: center;
+}
+
+.mobileNavBar svg{
+    height: 2.2rem;
+    width: 2.2rem;
+}
+
+
+@media only screen and (max-width:600px){
+    .homeContainer__extraContainer{
+        display: none;
+    }
+    .homeContainer{
+        display: block;
+    }
+    .homeContainer__leftBar{
+        display: none;
+    }
+    .mobileNavBar{
+        display: flex;
+    }
+    .homeContainer__feedContainer{
+        padding-bottom: 9vh;
+    }
+}
+

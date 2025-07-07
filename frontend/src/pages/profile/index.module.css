@@ -1,6 +1,3 @@
-
-
-
  .backDrop{
     width: 3.4rem;
     height: auto;
@@ -205,5 +202,13 @@
     width:100%;
 }
 
+.card__profileContainer{
+    display: flex;
+}
 
-
+.card__profileContainer>img{
+    width: 3.4rem;
+    height: auto;
+    height: 3.4rem;
+    object-fit: cover;
+}
