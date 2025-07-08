@@ -108,7 +108,7 @@ function Dashboard() {
                                                         <p className={styles.postAuthor}>{post.userId.name}</p>
                                                         {
                                                             post.userId._id === authState.user.userId._id && <div onClick={async (e) => {
-                                                                await dispatch(deletePost({ post_id: post._id }))
+                                                                await dispatch(deletePost( post._id ))
                                                                 await dispatch(getAllPosts)
                                                             }}>
                                                                 <svg className={styles.deleteIcon} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -184,18 +184,21 @@ function Dashboard() {
                                     <div>
                                         {postState.comments.map((comment,index)=>{
                                             return(
-
                                                 <div className={styles.singleComment} key={comment._id}>
-                                                    <div className={singleComment__profileContainer}>
-                                                        <img src={`${BASE_URL}/${comment.userId.profilePicture}`} alt=''/>
+                                                    <div className={styles.singleComment__profileContainer}>
+                                                        <img
+                                                            src={comment.userId?.profilePicture ? `${BASE_URL}/${comment.userId.profilePicture}` : "/default.jpg"}
+                                                            alt="Wait"
+                                                        />
                                                         <div>
                                                             <p style={{fontWeight:"bold",fontSize:"1.2rem"}}>{comment.userId.name}</p>
                                                             <p>@{comment.userId.username}</p>
                                                         </div>
-                                                    </div>    
+                                                    </div>
+                                                    <div className={styles.singleComment__body}>
+                                                        <p>{comment.body}</p>
+                                                    </div>
                                                 </div>
-
-
                                             )
                                         })}
                                         
@@ -206,7 +209,7 @@ function Dashboard() {
                                     <input type="" value={commentText} onChange={(e)=>setCommentText(e.target.value)} placeholder='Comment' />
                                     <div onClick={async()=>{
                                         console.log("Sending comment for post ID:", postState.postId);
-                                        await dispatch(postComment({post_id:postState.postId,body:commentText}))
+                                        await dispatch(postComment({ post_id: postState.postId, body: commentText }))
                                         await dispatch(getAllComments({post_id:postState.postId}))
                                     }} className={styles.postCommentContainer__commentBtn}>
                                         <p>Comment</p>

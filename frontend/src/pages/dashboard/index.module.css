@@ -181,40 +181,93 @@
     padding: 1.4rem;
 }
 
-.postCommentContainer{
-    position: absolute;
-    bottom:1.2rem;
-    left: 1.2rem;
-    width:90%;
+.singleComment {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: background 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.singleComment:hover {
+    background: #f1f1f1;
+}
+
+.singleComment__profileContainer img {
+    display: block;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 32px;
+    min-height: 32px;
+    max-width: 64px;
+    max-height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    background: #eee;
+}
+
+.singleComment__profileContainer div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.singleComment__body {
+    margin-left: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.postCommentContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap:1.2rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    width: 90%;
 }
 
-.postCommentContainer>input{
-    flex:0.9;
-    padding-inline: 1.5rem;
-    padding-block: 1.2rem;
-    border: none;
+.postCommentContainer input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
     outline: none;
-    background-color: rgb(228,228,228);
-    border-radius: 15px;
+    transition: border 0.2s;
+    background: #f5f5f5;
 }
 
-.postCommentContainer>input:focus{
-    border:1px solid silver;
+.postCommentContainer input:focus {
+    border: 1.5px solid #0073b1;
 }
 
-.postCommentContainer__commentBtn{
-    flex:0.1;
-    width:fit-content;
-    padding: 1.2rem;
-    background: orange;
-    border-radius: 15px;
-    text-align: center;
-    color: white;
+.postCommentContainer__commentBtn {
+    background: #0073b1;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+    user-select: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.postCommentContainer__commentBtn:hover {
+    background: #005983;
 }
 
 @media screen and (max-width:600px){

@@ -75,7 +75,7 @@ export const get_comments_by_post=async(req,res)=>{
         if(!post){
             return res.status(404).json({message:"Page not found"});
         }
-        const comments=await Comment.find({postId:post_id}).populate("userId","username name");
+        const comments = await Comment.find({postId: post_id}).populate("userId", "username name profilePicture");
         return res.json(comments.reverse());
     }catch(err){
         return res.status(500).json({message:err.message});
@@ -107,7 +107,8 @@ export const commentPost=async(req,res)=>{
         });
 
         await comment.save();
-        return res.status(200).json({message:"Comment Added"});
+        const populatedComment = await Comment.findById(comment._id).populate("userId", "username name profilePicture");
+        return res.status(200).json(populatedComment);
 
     }catch(err){
         return res.status(500).json({message:err.message});

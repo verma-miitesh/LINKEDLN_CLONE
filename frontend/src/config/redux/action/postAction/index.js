@@ -49,6 +49,7 @@ export const deletePost = createAsyncThunk(
       const response = await clientServer.delete("/delete_post", {
         data: {
           token: localStorage.getItem("token"),
+          post_id,
         },
       });
       return thunkAPI.fulfillWithValue(response.data);

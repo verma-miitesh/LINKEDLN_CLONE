@@ -101,49 +101,26 @@ function ViewProfilePage({ userProfile }) {
                   {isCurrentUserInConnection ?
                     <button className={styles.connectedButton}>{isConnectionNull ? "Pending" : "Connected"}</button>
                     :
-                    // <button
-                    //   onClick={async () => {
-
-                    //     await dispatch(sendConnectionRequest({ token: localStorage.getItem("token"), user_id: userProfile.userId._id }));
-                    //     await dispatch(getConnectionsRequest({ token: localStorage.getItem("token") }));
-                    //     await dispatch(getMyConnectionsRequest({ token: localStorage.getItem("token") }));
-
-                    //   }}
-                    //   className={styles.connectBtn}
-                    // >
-                    //   Connect
-                    // </button>
-
                     <button
                       onClick={async () => {
                         const token = localStorage.getItem("token");
-
                         // Step 1: Send connection request
                         await dispatch(sendConnectionRequest({ token, user_id: userProfile.userId._id }));
-
-                        // Step 2: Refresh both sent and received connection data
-                        await Promise.all([
-                          dispatch(getConnectionsRequest({ token })),
-                          dispatch(getMyConnectionsRequest({ token }))
-                        ]);
-
-                        // Step 3: Re-read the updated state to update the button
-                        const newConnections = store.getState().auth.connections; // <-- Using Redux store directly
-                        const found = newConnections?.find(user => user.connectionId._id === userProfile.userId._id);
-
-                        if (found) {
-                          setIsCurrentUserInConnection(true);
-                          setIsConnectionNull(!found.status_accepted);
-                        }
+                        // Step 2: The thunk already dispatches getConnectionsRequest and getMyConnectionsRequest
+                        // Step 3: Wait a moment for Redux to update, then update local state
+                        setTimeout(() => {
+                          const newConnections = store.getState().auth.connections;
+                          const found = newConnections?.find(user => user.connectionId._id === userProfile.userId._id);
+                          if (found) {
+                            setIsCurrentUserInConnection(true);
+                            setIsConnectionNull(!found.status_accepted);
+                          }
+                        }, 300); // 300ms delay to allow Redux state to update
                       }}
                       className={styles.connectBtn}
                     >
                       Connect
                     </button>
-
-
-
-
                   }
 
                   <div onClick={async () => {

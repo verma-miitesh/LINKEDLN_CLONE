@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllComments, getAllPosts } from "../../action/postAction";
+import { getAllComments, getAllPosts, deletePost } from "../../action/postAction";
 import { comment } from "postcss";
 
 
@@ -44,6 +44,10 @@ const postSlice=createSlice({
         .addCase(getAllComments.fulfilled,(state,action)=>{
             state.postId=action.payload.post_id,
             state.comments=action.payload.comments
+        })
+        .addCase(deletePost.fulfilled, (state, action) => {
+            const deletedPostId = action.meta.arg;
+            state.posts = state.posts.filter(post => post._id !== deletedPostId);
         })
     }
 })
