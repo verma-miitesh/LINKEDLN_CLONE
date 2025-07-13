@@ -104,6 +104,9 @@ export const sendConnectionRequest = createAsyncThunk(
       thunkAPI.dispatch(getMyConnectionsRequest({ token: user.token }));
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
+      // Always update state, even on error
+      thunkAPI.dispatch(getConnectionsRequest({ token: user.token }));
+      thunkAPI.dispatch(getMyConnectionsRequest({ token: user.token }));
       return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
@@ -120,7 +123,7 @@ export const getMyConnectionsRequest = createAsyncThunk(
           token: user.token,
         },
       });
-      return thunkAPI.fulfillWithValue(response.data.connections);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message);
     }

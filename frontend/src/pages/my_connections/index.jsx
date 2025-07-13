@@ -24,9 +24,15 @@ function MyConnectionPage() {
         }
     }, [dispatch]);
 
+    // Add debugging logs
+    useEffect(() => {
+        console.log("🔍 Connection Request Data:", authState.connectionRequest);
+        console.log("🔍 Connections Data:", authState.connections);
+    }, [authState.connectionRequest, authState.connections]);
+
 
     const pendingRequests = (authState.connectionRequest || []).filter(
-        (connection) => connection.status_accepted === null && connection.userId
+        (connection) => connection.status_accepted === null
     );
 
     const acceptedReceived = (authState.connectionRequest || []).filter(

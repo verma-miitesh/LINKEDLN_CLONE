@@ -27,6 +27,11 @@ function ViewProfilePage({ userProfile }) {
     await dispatch(getMyConnectionsRequest({ token: localStorage.getItem("token") }));
   }
 
+
+  useEffect(() => {
+    getUsersPost();
+  }, [])
+
   useEffect(() => {
     let post = postReducer.posts.filter((post) => {
       return post.userId.username === router.query.username
@@ -68,13 +73,8 @@ function ViewProfilePage({ userProfile }) {
         setIsConnectionNull(false);
       }
     }
-  }, [authState.connections, authState.connectionRequest])
+  }, [authState.connections, authState.connectionRequest, userProfile.userId._id])
 
-
-
-  useEffect(() => {
-    getUsersPost();
-  }, [])
 
 
   const searchParamers = useSearchParams();
@@ -98,30 +98,35 @@ function ViewProfilePage({ userProfile }) {
 
 
                 <div style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
-                  {isCurrentUserInConnection ?
-                    <button className={styles.connectedButton}>{isConnectionNull ? "Pending" : "Connected"}</button>
-                    :
+                  {isCurrentUserInConnection ? (
+                    <button className={styles.connectedButton}>
+                      {isConnectionNull ? "Pending" : "Connected"}
+                    </button>
+                  ) : (
                     <button
                       onClick={async () => {
                         const token = localStorage.getItem("token");
-                        // Step 1: Send connection request
-                        await dispatch(sendConnectionRequest({ token, user_id: userProfile.userId._id }));
-                        // Step 2: The thunk already dispatches getConnectionsRequest and getMyConnectionsRequest
-                        // Step 3: Wait a moment for Redux to update, then update local state
-                        setTimeout(() => {
-                          const newConnections = store.getState().auth.connections;
-                          const found = newConnections?.find(user => user.connectionId._id === userProfile.userId._id);
-                          if (found) {
-                            setIsCurrentUserInConnection(true);
-                            setIsConnectionNull(!found.status_accepted);
-                          }
-                        }, 300); // 300ms delay to allow Redux state to update
+                        const result = await dispatch(sendConnectionRequest({ token, user_id: userProfile.userId._id }));
+
+                        if (result?.payload?.message === "Request already sent!") {
+                          alert("Request already sent");
+                        } else {
+                          // Manually set to Pending immediately
+                          setIsCurrentUserInConnection(true);
+                          setIsConnectionNull(true);
+                        }
+
+                        // Re-fetch updated connections
+                        // await dispatch(getConnectionsRequest({ token }));
+                        // await dispatch(getMyConnectionsRequest({ token }));
                       }}
+
                       className={styles.connectBtn}
                     >
                       Connect
                     </button>
-                  }
+
+                  )}
 
                   <div onClick={async () => {
                     const response = await clientServer.get(`/user/download_resume?id=${userProfile.userId._id}`);
