@@ -6,7 +6,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from "./index.module.css"
 import { useRouter } from 'next/router';
-import { connect } from 'mongoose';
 
 function MyConnectionPage() {
 
