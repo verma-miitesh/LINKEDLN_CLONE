@@ -185,53 +185,25 @@ function ViewProfilePage({ userProfile }) {
   )
 }
 
-// export async function getServerSideProps(context) {
-//   // console.log(context.query.username)
-//   try {
-//     const request = await clientServer.get("/user/get_profile_based_on_username", {
-//       params: {
-//         username: context.query.username
-//       }
-//     });
-
-//     return { props: { userProfile: request.data.profile } }
-//   } catch (err) {
-//     console.error("Error fetching profile:", err.message);
-
-//     return {
-//       notFound: true,
-//     };
-//   }
-// };
-
 export async function getServerSideProps(context) {
-  const username = context.query.username?.toLowerCase(); // Handle case sensitivity
-
+  // console.log(context.query.username)
   try {
-    const res = await fetch(`https://linkedln-clone-lokc.onrender.com/user/get_profile_based_on_username?username=${username}`);
+    const request = await clientServer.get("/user/get_profile_based_on_username", {
+      params: {
+        username: context.query.username
+      }
+    });
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch profile: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    if (!data.profile) {
-      return { notFound: true };
-    }
-
-    return {
-      props: {
-        userProfile: data.profile,
-      },
-    };
+    return { props: { userProfile: request.data.profile } }
   } catch (err) {
-    console.error("❌ SSR Error fetching profile:", err.message);
+    console.error("Error fetching profile:", err.message);
+
     return {
       notFound: true,
     };
   }
-}
+};
+
 
 
 
