@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConnectionsRequest, getMyConnectionsRequest, sendConnectionRequest } from '@/config/redux/action/authAction'
 import { getAllPosts } from '@/config/redux/action/postAction';
-import { store } from '@/config/redux/store';
 
 function ViewProfilePage({ userProfile }) {
 
@@ -115,10 +114,6 @@ function ViewProfilePage({ userProfile }) {
                           setIsCurrentUserInConnection(true);
                           setIsConnectionNull(true);
                         }
-
-                        // Re-fetch updated connections
-                        // await dispatch(getConnectionsRequest({ token }));
-                        // await dispatch(getMyConnectionsRequest({ token }));
                       }}
 
                       className={styles.connectBtn}
@@ -190,24 +185,55 @@ function ViewProfilePage({ userProfile }) {
   )
 }
 
+// export async function getServerSideProps(context) {
+//   // console.log(context.query.username)
+//   try {
+//     const request = await clientServer.get("/user/get_profile_based_on_username", {
+//       params: {
+//         username: context.query.username
+//       }
+//     });
+
+//     return { props: { userProfile: request.data.profile } }
+//   } catch (err) {
+//     console.error("Error fetching profile:", err.message);
+
+//     return {
+//       notFound: true,
+//     };
+//   }
+// };
+
 export async function getServerSideProps(context) {
-  console.log(context.query.username)
+  const username = context.query.username?.toLowerCase(); // normalize in case of uppercase input
+
   try {
-    const request = await clientServer.get("/user/get_profile_based_on_username", {
-      params: {
-        username: context.query.username
-      }
-    });
-    // const response = await response.data;
-    // console.log(response);
-    return { props: { userProfile: request.data.profile } }
-  } catch (err) {
-    console.error("Error fetching profile:", err.message);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/get_profile_based_on_username?username=${username}`);
+
+    // If the API failed (e.g., 404 user not found), throw error to trigger fallback
+    if (!res.ok) {
+      throw new Error(`Failed to fetch profile: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    // If profile is missing, treat as not found
+    if (!data.profile) {
+      return { notFound: true };
+    }
 
     return {
-      notFound: true,
+      props: {
+        userProfile: data.profile,
+      },
+    };
+  } catch (err) {
+    console.error("❌ SSR Error fetching profile:", err.message);
+    return {
+      notFound: true, // fallback to 404 page
     };
   }
-};
+}
 
-export default ViewProfilePage;
+
+export default ViewProfilePage; 
