@@ -11,6 +11,10 @@ import { getAllPosts } from '@/config/redux/action/postAction';
 
 function ViewProfilePage({ userProfile }) {
 
+  if (!userProfile) {
+    return <div>Profile not found.</div>;
+  }
+
   const router = useRouter();
   const postReducer = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
@@ -193,6 +197,10 @@ export async function getServerSideProps(context) {
         username: context.params.username
       }
     });
+
+    if (!request.data.profile) {
+      return { notFound: true };
+    }
 
     return { props: { userProfile: request.data.profile } }
   } catch (err) {

@@ -299,7 +299,9 @@ export const getUserProfileAndUserBasedOnUsername = async (req, res) => {
       "userId",
       "name username email profilePicture"
     );
-
+    if (!userProfile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
     return res.json({ profile: userProfile });
   } catch (err) {
     return res.status(500).json({ message: err.message });
