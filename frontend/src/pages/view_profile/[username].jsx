@@ -190,7 +190,7 @@ export async function getServerSideProps(context) {
   try {
     const request = await clientServer.get("/user/get_profile_based_on_username", {
       params: {
-        username: context.query.username
+        username: context.params.username
       }
     });
 
