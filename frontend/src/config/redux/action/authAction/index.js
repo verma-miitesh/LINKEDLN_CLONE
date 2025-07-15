@@ -19,7 +19,9 @@ export const loginUser = createAsyncThunk(
 
       return thunkAPI.fulfillWithValue(response.data.token);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "Login failed"
+      );
     }
   }
 );
@@ -35,7 +37,9 @@ export const registerUser = createAsyncThunk(
         name: user.name,
       });
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "Registered failed failed"
+      );
     }
   }
 );
@@ -53,7 +57,9 @@ export const getAboutUser = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       // console.error("❌ get_user_and_profile failed", err);
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "GetAboutUser failed"
+      );
     }
   }
 );
@@ -65,11 +71,12 @@ export const getAllUsers = createAsyncThunk(
       const response = await clientServer.get("/user/get_all_users");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "GetAllUsers failed"
+      );
     }
   }
 );
-
 
 //mene kis kis ko connection bheje
 export const getConnectionsRequest = createAsyncThunk(
@@ -84,7 +91,9 @@ export const getConnectionsRequest = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data.connections);
     } catch (err) {
       console.log(err);
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "Get connection request failed"
+      );
     }
   }
 );
@@ -107,11 +116,12 @@ export const sendConnectionRequest = createAsyncThunk(
       // Always update state, even on error
       thunkAPI.dispatch(getConnectionsRequest({ token: user.token }));
       thunkAPI.dispatch(getMyConnectionsRequest({ token: user.token }));
-      return thunkAPI.rejectWithValue(err.response.data.message);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "sendConnectionRequest failed"
+      );
     }
   }
 );
-
 
 //mere pass kis kis ki connection aa rkhe hai
 export const getMyConnectionsRequest = createAsyncThunk(
@@ -125,7 +135,9 @@ export const getMyConnectionsRequest = createAsyncThunk(
       });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.message);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "getMyConnectionRequest failed"
+      );
     }
   }
 );
@@ -134,16 +146,21 @@ export const AcceptConnection = createAsyncThunk(
   "user/acceptConnection",
   async (user, thunkAPI) => {
     try {
-        const response = await clientServer.post("/user/accept_connection_request",{
-            token:user.token,
-            requestId:user.connectionId,
-            action_type:user.action
-        });
-        thunkAPI.dispatch(getConnectionsRequest({token:user.token}));
-        thunkAPI.dispatch(getMyConnectionsRequest({token:user.token}))
-        return thunkAPI.fulfillWithValue(response.data);
+      const response = await clientServer.post(
+        "/user/accept_connection_request",
+        {
+          token: user.token,
+          requestId: user.connectionId,
+          action_type: user.action,
+        }
+      );
+      thunkAPI.dispatch(getConnectionsRequest({ token: user.token }));
+      thunkAPI.dispatch(getMyConnectionsRequest({ token: user.token }));
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-        return thunkAPI.rejectWithValue(err.response.data.message);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data?.message || "AcceptConnection failed"
+      );
     }
   }
 );
