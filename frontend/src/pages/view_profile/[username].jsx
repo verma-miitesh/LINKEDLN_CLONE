@@ -205,19 +205,17 @@ function ViewProfilePage({ userProfile }) {
 // };
 
 export async function getServerSideProps(context) {
-  const username = context.query.username?.toLowerCase(); // normalize in case of uppercase input
+  const username = context.query.username?.toLowerCase(); // Handle case sensitivity
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/get_profile_based_on_username?username=${username}`);
+    const res = await fetch(`https://linkedln-clone-lokc.onrender.com/user/get_profile_based_on_username?username=${username}`);
 
-    // If the API failed (e.g., 404 user not found), throw error to trigger fallback
     if (!res.ok) {
       throw new Error(`Failed to fetch profile: ${res.status}`);
     }
 
     const data = await res.json();
 
-    // If profile is missing, treat as not found
     if (!data.profile) {
       return { notFound: true };
     }
@@ -230,10 +228,11 @@ export async function getServerSideProps(context) {
   } catch (err) {
     console.error("❌ SSR Error fetching profile:", err.message);
     return {
-      notFound: true, // fallback to 404 page
+      notFound: true,
     };
   }
 }
+
 
 
 export default ViewProfilePage; 
